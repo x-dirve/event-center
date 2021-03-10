@@ -1,7 +1,7 @@
 {
     "name": "@x-drive/event-center",
-    "version": "1.0.0",
-    "description": "Be happy",
+    "version": "1.0.1",
+    "description": "简单的消息订阅模块，用于一些简单的场景",
     "author": "digiaries <digiaries@hotmail.com>",
     "license": "MIT",
     "main": "dist/index.js",

@@ -25,7 +25,7 @@ interface EventHandler extends Function {
     eventId?: number;
 
     /**订阅消息处理函数，返回 false 阻止队列继续执行 */
-    (re: EventHandlerParam):boolean;
+    (re?: EventHandlerParam):boolean|void;
 }
 
 class EventCenter {
