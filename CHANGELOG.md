@@ -1,3 +1,8 @@
+## v1.0.2
+
+### Fix
+- fix: 修复 emit 时不传事件数据会报错的问题 [8ffd735](https://github.com/x-dirve/event-center/commit/8ffd7359f1044517d11a08f60b778edb70a5622c)
+
 ## v1.0.1
 
 ### Fix
