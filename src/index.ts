@@ -1,4 +1,4 @@
-import { isFunction, isNumber, isArray, copy, each } from "@x-drive/utils";
+import { isFunction, isNumber, isArray, copy, each, isUndefined } from "@x-drive/utils";
 
 /**传递给处理函数的参数对象 */
 type EventHandlerParam = {
@@ -43,6 +43,9 @@ class EventCenter {
      */
     private fire(subscribes: EventSubscribe[], data: any) {
         if (isArray(subscribes)) {
+            if (isUndefined(data)) {
+                data = null;
+            }
             each(subscribes, function (item: EventSubscribe) {
                 if (isFunction(item.handler)) {
                     return item.handler({

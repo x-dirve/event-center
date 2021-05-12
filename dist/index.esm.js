@@ -17,6 +17,14 @@ function isObject(subject) {
 }
 
 /**
+ * 是否 undefined
+ * @param  subject 待判断的数据
+ */
+function isUndefined(subject) {
+    return is(subject, "undefined");
+}
+
+/**
  * 是否是函数
  * @param  subject 待判断的数据
  */
@@ -97,6 +105,9 @@ class EventCenter {
      */
     fire(subscribes, data) {
         if (isArray(subscribes)) {
+            if (isUndefined(data)) {
+                data = null;
+            }
             each(subscribes, function (item) {
                 if (isFunction(item.handler)) {
                     return item.handler({
