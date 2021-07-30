@@ -1,3 +1,8 @@
+## v1.1.0
+
+### Feat
+- feat: 不再限定发送及接收参数多数量及接收的数据格式，改为支持同时发送及接收多个参数，且不再限定接收的数据格式 [450d671](https://github.com/x-dirve/event-center/commit/450d671d62bb4edd47f47fe462f12f5ea0245b6b)
+
 ## v1.0.2
 
 ### Fix
