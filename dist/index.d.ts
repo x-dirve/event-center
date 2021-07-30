@@ -1,8 +1,5 @@
 /**传递给处理函数的参数对象 */
-declare type EventHandlerParam = {
-    /**数据对象 */
-    data: any;
-};
+declare type EventHandlerParam = any;
 interface EventHandler extends Function {
     /**订阅函数 id */
     eventId?: number;
@@ -27,11 +24,10 @@ declare class EventCenter {
      * @returns       订阅函数 id，使用该 id 可以在不传入原有订阅函数的情况下取消事件订阅
      * @example
      * ```ts
-     * const evHandler = ({ data }) => {
+     * EventCenter.on("test", (data) => {
      *     console.log("test");
      *     console.log(data);
-     * }
-     * EventCenter.on("test", evHandler);
+     * });
      * ```
      */
     on(name: string, handler: EventHandler): number;
@@ -55,9 +51,10 @@ declare class EventCenter {
      * @example
      * ```ts
      * EventCenter.emit("test", "Nice");
+     * EventCenter.emit("hello", "Nice", "To", "Meet", "U");
      * ```
      */
-    emit(name: string, data?: any): void;
+    emit(name: string, ...data: any[]): void;
 }
 export { EventCenter };
 declare const GlobalEventCenter: EventCenter;

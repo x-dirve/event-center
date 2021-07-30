@@ -106,13 +106,11 @@ class EventCenter {
     fire(subscribes, data) {
         if (isArray(subscribes)) {
             if (isUndefined(data)) {
-                data = null;
+                data = [];
             }
             each(subscribes, function (item) {
                 if (isFunction(item.handler)) {
-                    return item.handler({
-                        "data": copy(data)
-                    });
+                    return item.handler.apply(item.handler, copy(data));
                 }
             }, this);
         }
@@ -124,11 +122,10 @@ class EventCenter {
      * @returns       订阅函数 id，使用该 id 可以在不传入原有订阅函数的情况下取消事件订阅
      * @example
      * ```ts
-     * const evHandler = ({ data }) => {
+     * EventCenter.on("test", (data) => {
      *     console.log("test");
      *     console.log(data);
-     * }
-     * EventCenter.on("test", evHandler);
+     * });
      * ```
      */
     on(name, handler) {
@@ -181,9 +178,10 @@ class EventCenter {
      * @example
      * ```ts
      * EventCenter.emit("test", "Nice");
+     * EventCenter.emit("hello", "Nice", "To", "Meet", "U");
      * ```
      */
-    emit(name, data) {
+    emit(name, ...data) {
         if (this.events[name]) {
             this.fire(this.events[name], data);
         }

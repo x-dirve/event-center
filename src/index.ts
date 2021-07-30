@@ -1,10 +1,7 @@
 import { isFunction, isNumber, isArray, copy, each, isUndefined } from "@x-drive/utils";
 
 /**传递给处理函数的参数对象 */
-type EventHandlerParam = {
-    /**数据对象 */
-    data: any;
-}
+type EventHandlerParam = any;
 
 /**处理函数对象 */
 type EventSubscribe = {
@@ -25,7 +22,7 @@ interface EventHandler extends Function {
     eventId?: number;
 
     /**订阅消息处理函数，返回 false 阻止队列继续执行 */
-    (re?: EventHandlerParam):boolean|void;
+    (re?: EventHandlerParam):boolean | void;
 }
 
 class EventCenter {
@@ -41,16 +38,17 @@ class EventCenter {
      * @param subscribes 触发事件对应的订阅队列
      * @param data       需要传递给订阅函数的数据
      */
-    private fire(subscribes: EventSubscribe[], data: any) {
+    private fire(subscribes: EventSubscribe[], data?: any[]) {
         if (isArray(subscribes)) {
             if (isUndefined(data)) {
-                data = null;
+                data = [];
             }
             each(subscribes, function (item: EventSubscribe) {
                 if (isFunction(item.handler)) {
-                    return item.handler({
-                        "data": copy(data)
-                    });
+                    return item.handler.apply(
+                        item.handler
+                        , copy(data)
+                    );
                 }
             }, this);
         }
@@ -63,11 +61,10 @@ class EventCenter {
      * @returns       订阅函数 id，使用该 id 可以在不传入原有订阅函数的情况下取消事件订阅
      * @example
      * ```ts
-     * const evHandler = ({ data }) => {
+     * EventCenter.on("test", (data) => {
      *     console.log("test");
      *     console.log(data);
-     * }
-     * EventCenter.on("test", evHandler);
+     * });
      * ```
      */
     on(name: string, handler: EventHandler) {
@@ -124,9 +121,10 @@ class EventCenter {
      * @example
      * ```ts
      * EventCenter.emit("test", "Nice");
+     * EventCenter.emit("hello", "Nice", "To", "Meet", "U");
      * ```
      */
-    emit(name: string, data?: any) {
+    emit(name: string, ...data) {
         if (this.events[name]) {
             this.fire(
                 this.events[name]

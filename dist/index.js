@@ -109,13 +109,11 @@ var EventCenter = function EventCenter() {
 EventCenter.prototype.fire = function fire (subscribes, data) {
     if (isArray(subscribes)) {
         if (isUndefined(data)) {
-            data = null;
+            data = [];
         }
         each(subscribes, function (item) {
             if (isFunction(item.handler)) {
-                return item.handler({
-                    "data": copy(data)
-                });
+                return item.handler.apply(item.handler, copy(data));
             }
         }, this);
     }
@@ -127,11 +125,10 @@ EventCenter.prototype.fire = function fire (subscribes, data) {
  * @returns   订阅函数 id，使用该 id 可以在不传入原有订阅函数的情况下取消事件订阅
  * @example
  * ```ts
- * const evHandler = ({ data }) => {
+ * EventCenter.on("test", (data) => {
  * console.log("test");
  * console.log(data);
- * }
- * EventCenter.on("test", evHandler);
+ * });
  * ```
  */
 EventCenter.prototype.on = function on (name, handler) {
@@ -184,9 +181,13 @@ EventCenter.prototype.off = function off (name, handler) {
  * @example
  * ```ts
  * EventCenter.emit("test", "Nice");
+ * EventCenter.emit("hello", "Nice", "To", "Meet", "U");
  * ```
  */
-EventCenter.prototype.emit = function emit (name, data) {
+EventCenter.prototype.emit = function emit (name) {
+        var data = [], len = arguments.length - 1;
+        while ( len-- > 0 ) data[ len ] = arguments[ len + 1 ];
+
     if (this.events[name]) {
         this.fire(this.events[name], data);
     }
