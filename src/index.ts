@@ -1,8 +1,5 @@
 import { isFunction, isNumber, isArray, copy, each, isUndefined } from "@x-drive/utils";
 
-/**传递给处理函数的参数对象 */
-type EventHandlerParam = any;
-
 /**处理函数对象 */
 type EventSubscribe = {
     /**从哪个实例发出来的，暂时没用 */
@@ -22,7 +19,7 @@ interface EventHandler extends Function {
     eventId?: number;
 
     /**订阅消息处理函数，返回 false 阻止队列继续执行 */
-    (re?: EventHandlerParam):boolean | void;
+    (...re: any[]): boolean | void;
 }
 
 class EventCenter {

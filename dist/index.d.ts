@@ -1,10 +1,8 @@
-/**传递给处理函数的参数对象 */
-declare type EventHandlerParam = any;
 interface EventHandler extends Function {
     /**订阅函数 id */
     eventId?: number;
     /**订阅消息处理函数，返回 false 阻止队列继续执行 */
-    (re?: EventHandlerParam): boolean | void;
+    (...re: any[]): boolean | void;
 }
 declare class EventCenter {
     /**订阅函数 id */
